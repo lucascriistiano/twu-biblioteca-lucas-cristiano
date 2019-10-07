@@ -24,13 +24,26 @@ public class BibliotecaTest {
     public void testWelcomeMessageIsShownOnApplicationStart() {
         app.start();
         String welcomeMessage = app.generateWelcomeMessage();
-        String output = verify(cli, times(1)).showOutput(welcomeMessage);
+        verify(cli, times(1)).showOutput(welcomeMessage);
     }
 
     @Test
     public void testWelcomeMessageContent() {
         String message = app.generateWelcomeMessage();
         assertThat(message, is("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!"));
+    }
+
+    @Test
+    public void testMainMenuIsGenerated() {
+        app.start();
+        String menu = app.generateMenu();
+        verify(cli, times(1)).showOutput(menu);
+    }
+
+    @Test
+    public void testMainMenuContent() {
+        String message = app.generateMenu();
+        assertThat(message, is("1 - List of books"));
     }
 
 }

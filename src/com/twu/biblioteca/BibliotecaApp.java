@@ -21,10 +21,18 @@ public class BibliotecaApp {
 
     public void start() {
         bibliotecaCLI.showOutput(generateWelcomeMessage());
+        bibliotecaCLI.printBlankLine();
+        bibliotecaCLI.showOutput(generateMenu());
+        String input = bibliotecaCLI.readInput();
+        System.out.println(String.format("Selected %s", input));
     }
 
     public String generateWelcomeMessage() {
         return "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!";
+    }
+
+    public String generateMenu() {
+        return "1 - List of books";
     }
 
 }
