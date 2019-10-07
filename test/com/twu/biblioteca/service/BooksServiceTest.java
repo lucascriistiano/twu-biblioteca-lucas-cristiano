@@ -1,5 +1,6 @@
 package com.twu.biblioteca.service;
 
+import com.twu.biblioteca.domain.Book;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,7 +22,7 @@ public class BooksServiceTest {
 
     @Test
     public void shouldReturnNonEmptyListOfBooks() {
-        List<String> books = service.listBooks();
+        List<Book> books = service.listBooks();
         assertThat(books.size(),  is(greaterThan(0)));
     }
 
