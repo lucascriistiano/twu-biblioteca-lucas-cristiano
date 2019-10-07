@@ -8,10 +8,9 @@ public class BibliotecaCLI {
 
     public BibliotecaCLI() { }
 
-    public String readInput() {
+    public Integer readInput() {
         System.out.print("Type your input: ");
-        String input = sc.nextLine();
-        return input;
+        return sc.nextInt();
     }
 
     public String showOutput(String output) {

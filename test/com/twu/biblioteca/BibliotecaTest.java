@@ -2,6 +2,7 @@ package com.twu.biblioteca;
 
 
 import com.twu.biblioteca.ui.BibliotecaCLI;
+import com.twu.biblioteca.ui.MenuNavigator;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,11 +14,13 @@ public class BibliotecaTest {
 
     BibliotecaApp app;
     BibliotecaCLI cli;
+    MenuNavigator navigator;
 
     @Before
     public void setUp() {
         cli = mock(BibliotecaCLI.class);
-        app = new BibliotecaApp(cli);
+        navigator = mock(MenuNavigator.class);
+        app = new BibliotecaApp(cli, navigator);
     }
 
     @Test
@@ -34,16 +37,9 @@ public class BibliotecaTest {
     }
 
     @Test
-    public void testMainMenuIsGenerated() {
+    public void testMainMenuIsShown() {
         app.start();
-        String menu = app.generateMenu();
-        verify(cli, times(1)).showOutput(menu);
-    }
-
-    @Test
-    public void testMainMenuContent() {
-        String message = app.generateMenu();
-        assertThat(message, is("1 - List of books"));
+        verify(navigator, times(1)).getMenu();
     }
 
 }

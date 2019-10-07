@@ -1,10 +1,12 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.ui.BibliotecaCLI;
+import com.twu.biblioteca.ui.MenuNavigator;
 
 public class BibliotecaApp {
 
     private final BibliotecaCLI bibliotecaCLI;
+    private MenuNavigator menuNavigator;
 
     public static void main(String[] args) {
         BibliotecaApp app = new BibliotecaApp();
@@ -13,26 +15,28 @@ public class BibliotecaApp {
 
     public BibliotecaApp() {
         bibliotecaCLI = new BibliotecaCLI();
+        menuNavigator = new MenuNavigator();
     }
 
-    public BibliotecaApp(BibliotecaCLI cli) {
-        bibliotecaCLI = cli;
+    public BibliotecaApp(BibliotecaCLI cli, MenuNavigator navigator) {
+        this.bibliotecaCLI = cli;
+        this.menuNavigator = navigator;
     }
 
     public void start() {
         bibliotecaCLI.showOutput(generateWelcomeMessage());
         bibliotecaCLI.printBlankLine();
-        bibliotecaCLI.showOutput(generateMenu());
-        String input = bibliotecaCLI.readInput();
-        System.out.println(String.format("Selected %s", input));
+        showMenu();
     }
 
     public String generateWelcomeMessage() {
         return "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!";
     }
 
-    public String generateMenu() {
-        return "1 - List of books";
+    public void showMenu() {
+        bibliotecaCLI.showOutput(menuNavigator.getMenu());
+        Integer input = bibliotecaCLI.readInput();
+        menuNavigator.select(input);
     }
 
 }
