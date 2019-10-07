@@ -3,6 +3,8 @@ package com.twu.biblioteca;
 
 import com.twu.biblioteca.ui.BibliotecaCLI;
 import com.twu.biblioteca.ui.MenuNavigator;
+import com.twu.biblioteca.ui.exception.InvalidOptionException;
+import org.hamcrest.core.Is;
 import org.junit.Before;
 import org.junit.Test;
 

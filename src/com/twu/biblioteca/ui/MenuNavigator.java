@@ -2,6 +2,7 @@ package com.twu.biblioteca.ui;
 
 import com.twu.biblioteca.actions.books.ListBooks;
 import com.twu.biblioteca.actions.MenuAction;
+import com.twu.biblioteca.ui.exception.InvalidOptionException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +16,11 @@ public class MenuNavigator {
         this.options.put(1, new ListBooks());
     }
 
-    public void select(Integer input) {
+    public void select(Integer input) throws InvalidOptionException {
+        if (!this.isValidOption(input)) {
+            throw new InvalidOptionException();
+        }
+
         MenuAction action = options.get(input);
         action.run();
     }
@@ -28,6 +33,10 @@ public class MenuNavigator {
 
     private String formatMenuOption(Integer index, MenuAction action) {
         return String.format("%d - %s", index, action.getDescription());
+    }
+
+    public boolean isValidOption(Integer option) {
+        return options.keySet().contains(option);
     }
 
 }

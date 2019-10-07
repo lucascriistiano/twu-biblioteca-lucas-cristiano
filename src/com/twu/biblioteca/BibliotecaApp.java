@@ -2,11 +2,15 @@ package com.twu.biblioteca;
 
 import com.twu.biblioteca.ui.BibliotecaCLI;
 import com.twu.biblioteca.ui.MenuNavigator;
+import com.twu.biblioteca.ui.exception.InvalidOptionException;
+
+import java.io.IOException;
 
 public class BibliotecaApp {
 
     private final BibliotecaCLI bibliotecaCLI;
     private MenuNavigator menuNavigator;
+    private boolean running;
 
     public static void main(String[] args) {
         BibliotecaApp app = new BibliotecaApp();
@@ -14,19 +18,34 @@ public class BibliotecaApp {
     }
 
     public BibliotecaApp() {
-        bibliotecaCLI = new BibliotecaCLI();
-        menuNavigator = new MenuNavigator();
+        this.bibliotecaCLI = new BibliotecaCLI();
+        this.menuNavigator = new MenuNavigator();
+        this.running = false;
     }
 
     public BibliotecaApp(BibliotecaCLI cli, MenuNavigator navigator) {
         this.bibliotecaCLI = cli;
         this.menuNavigator = navigator;
+        this.running = false;
     }
 
     public void start() {
-        bibliotecaCLI.showOutput(generateWelcomeMessage());
-        bibliotecaCLI.printBlankLine();
-        showMenu();
+        this.running = true;
+
+        this.bibliotecaCLI.showOutput(generateWelcomeMessage());
+        this.bibliotecaCLI.printBlankLine();
+
+        while(running) {
+            this.showMenu();
+            try {
+                Integer input = this.readOption();
+                this.menuNavigator.select(input);
+            } catch(InvalidOptionException e) {
+                this.bibliotecaCLI.showOutput("Please select a valid option!");
+            }
+            this.bibliotecaCLI.printBlankLine();
+            this.bibliotecaCLI.clearOutput();
+        }
     }
 
     public String generateWelcomeMessage() {
@@ -34,9 +53,13 @@ public class BibliotecaApp {
     }
 
     public void showMenu() {
-        bibliotecaCLI.showOutput(menuNavigator.getMenu());
-        Integer input = bibliotecaCLI.readInput();
-        menuNavigator.select(input);
+        this.bibliotecaCLI.showOutput(this.menuNavigator.getMenu());
+    }
+
+    private Integer readOption() throws InvalidOptionException {
+        System.out.print("Select an menu option: ");
+        String input = this.bibliotecaCLI.readInput();
+        return BibliotecaCLI.parseMenuInput(input);
     }
 
 }

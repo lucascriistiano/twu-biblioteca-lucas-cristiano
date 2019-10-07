@@ -1,5 +1,8 @@
 package com.twu.biblioteca.ui;
 
+import com.twu.biblioteca.ui.exception.InvalidOptionException;
+
+import java.io.IOException;
 import java.util.Scanner;
 
 public class BibliotecaCLI {
@@ -8,9 +11,20 @@ public class BibliotecaCLI {
 
     public BibliotecaCLI() { }
 
-    public Integer readInput() {
-        System.out.print("Type your input: ");
-        return sc.nextInt();
+    public String readInput() {
+        return sc.nextLine();
+    }
+
+    public static Integer parseMenuInput(String input) throws InvalidOptionException {
+        try {
+            int option = Integer.parseInt(input);
+            if (option < 1) {
+                throw new InvalidOptionException();
+            }
+            return option;
+        } catch(NumberFormatException e) {
+            throw new InvalidOptionException();
+        }
     }
 
     public String showOutput(String output) {
@@ -20,6 +34,11 @@ public class BibliotecaCLI {
 
     public void printBlankLine() {
         System.out.println();
+    }
+
+    public void clearOutput() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
 }
