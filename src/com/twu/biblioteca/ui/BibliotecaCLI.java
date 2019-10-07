@@ -2,7 +2,6 @@ package com.twu.biblioteca.ui;
 
 import com.twu.biblioteca.ui.exception.InvalidOptionException;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class BibliotecaCLI {

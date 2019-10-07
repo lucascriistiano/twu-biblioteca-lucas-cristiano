@@ -1,6 +1,5 @@
 package com.twu.biblioteca.service;
 
-import com.twu.biblioteca.ui.exception.InvalidOptionException;
 import org.junit.Before;
 import org.junit.Test;
 

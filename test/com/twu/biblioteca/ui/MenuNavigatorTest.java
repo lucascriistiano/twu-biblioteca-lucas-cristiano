@@ -1,6 +1,5 @@
 package com.twu.biblioteca.ui;
 
-
 import com.twu.biblioteca.ui.exception.InvalidOptionException;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +17,7 @@ public class MenuNavigatorTest {
     }
 
     @Test
-    public void testMainMenuContent() {
+    public void shouldReturnMainMenuContentString() {
         String menuStr = navigator.getMenu();
         assertThat(menuStr, is("1 - List of books"));
     }
