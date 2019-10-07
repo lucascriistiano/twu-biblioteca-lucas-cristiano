@@ -1,7 +1,6 @@
-package com.twu.biblioteca.menu;
+package com.twu.biblioteca.ui;
 
 
-import com.twu.biblioteca.ui.MenuNavigator;
 import com.twu.biblioteca.ui.exception.InvalidOptionException;
 import org.junit.Before;
 import org.junit.Test;

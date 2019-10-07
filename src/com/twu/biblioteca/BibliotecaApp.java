@@ -4,8 +4,6 @@ import com.twu.biblioteca.ui.BibliotecaCLI;
 import com.twu.biblioteca.ui.MenuNavigator;
 import com.twu.biblioteca.ui.exception.InvalidOptionException;
 
-import java.io.IOException;
-
 public class BibliotecaApp {
 
     private final BibliotecaCLI bibliotecaCLI;
