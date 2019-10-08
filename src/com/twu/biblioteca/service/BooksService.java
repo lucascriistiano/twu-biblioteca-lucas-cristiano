@@ -3,6 +3,7 @@ package com.twu.biblioteca.service;
 import com.twu.biblioteca.domain.Book;
 import com.twu.biblioteca.domain.BookStatus;
 import com.twu.biblioteca.service.exception.NonExistentBookException;
+import com.twu.biblioteca.service.exception.NotCheckedOutBookException;
 import com.twu.biblioteca.service.exception.UnavailableBookException;
 
 import java.util.ArrayList;
@@ -45,6 +46,14 @@ public class BooksService {
         book.setStatus(BookStatus.NOT_AVAILABLE);
     }
 
+    public void returnBook(Integer bookID) throws NotCheckedOutBookException {
+        Book book = find(bookID);
+        if (book.getStatus() == BookStatus.AVAILABLE) {
+            throw new NotCheckedOutBookException();
+        }
+        book.setStatus(BookStatus.AVAILABLE);
+    }
+
     public Book find(Integer bookID) throws NonExistentBookException {
         Book book = books.stream()
                 .filter(b -> b.getId().equals(bookID))
@@ -55,4 +64,5 @@ public class BooksService {
         }
         return book;
     }
+
 }
