@@ -5,7 +5,9 @@ import com.twu.biblioteca.actions.MenuAction;
 import com.twu.biblioteca.actions.QuitApplicationAction;
 import com.twu.biblioteca.actions.ReturnItem;
 import com.twu.biblioteca.actions.books.ListBooks;
+import com.twu.biblioteca.actions.movies.ListMovies;
 import com.twu.biblioteca.service.BooksService;
+import com.twu.biblioteca.service.MoviesService;
 import com.twu.biblioteca.ui.exception.InvalidOptionException;
 
 import java.util.HashMap;
@@ -23,7 +25,8 @@ public class MenuNavigator {
         this.options.put(1, new ListBooks(outputBuilder, BooksService.getInstance(), "Book"));
         this.options.put(2, new CheckoutItem<>(outputBuilder, cli, BooksService.getInstance(), "Book"));
         this.options.put(3, new ReturnItem<>(outputBuilder, cli, BooksService.getInstance(), "Book"));
-        this.options.put(4, new QuitApplicationAction());
+        this.options.put(4, new ListMovies(outputBuilder, MoviesService.getInstance(), "Movie"));
+        this.options.put(5, new QuitApplicationAction());
     }
 
     public boolean select(Integer input) throws InvalidOptionException {
