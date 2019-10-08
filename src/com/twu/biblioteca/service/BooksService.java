@@ -1,9 +1,11 @@
 package com.twu.biblioteca.service;
 
 import com.twu.biblioteca.domain.Book;
+import com.twu.biblioteca.domain.BookStatus;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BooksService {
 
@@ -29,4 +31,18 @@ public class BooksService {
         return books;
     }
 
+    public List<Book> listAvailableBooks() {
+        return books.stream().filter(b -> b.getStatus() == BookStatus.AVAILABLE).collect(Collectors.toList());
+    }
+
+    public void checkoutBook(Book book) {
+        book.setStatus(BookStatus.NOT_AVAILABLE);
+    }
+
+    public Book find(Integer bookID) {
+        return books.stream()
+                .filter(b -> b.getId().equals(bookID))
+                .findAny()
+                .orElse(null);
+    }
 }

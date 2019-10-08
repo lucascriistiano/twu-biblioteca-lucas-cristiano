@@ -12,9 +12,9 @@ import static org.mockito.Mockito.*;
 
 public class BibliotecaAppTest {
 
-    BibliotecaApp app;
-    BibliotecaCLI cli;
-    MenuNavigator navigator;
+    private BibliotecaApp app;
+    private BibliotecaCLI cli;
+    private MenuNavigator navigator;
 
     @Before
     public void setUp() {
@@ -27,7 +27,7 @@ public class BibliotecaAppTest {
     public void shouldShowWelcomeMessageOnApplicationStart() {
         app.start();
         String welcomeMessage = app.generateWelcomeMessage();
-        verify(cli, times(1)).showOutput(welcomeMessage);
+        verify(cli, times(1)).showOutputAndLineBreak(welcomeMessage);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class BibliotecaAppTest {
     @Test
     public void shouldShowMainMenuOnApplicationStart() {
         app.start();
-        verify(navigator, times(1)).getMenu();
+        verify(navigator, times(1)).showMenu();
     }
 
 }

@@ -17,7 +17,7 @@ public class BibliotecaApp {
 
     public BibliotecaApp() {
         this.bibliotecaCLI = new BibliotecaCLI();
-        this.menuNavigator = new MenuNavigator();
+        this.menuNavigator = new MenuNavigator(bibliotecaCLI);
         this.running = false;
     }
 
@@ -30,16 +30,16 @@ public class BibliotecaApp {
     public void start() {
         this.running = true;
 
-        this.bibliotecaCLI.showOutput(generateWelcomeMessage());
+        this.bibliotecaCLI.showOutputAndLineBreak(generateWelcomeMessage());
         this.bibliotecaCLI.printBlankLine();
 
         while(running) {
-            this.showMenu();
+            this.menuNavigator.showMenu();
             try {
                 Integer input = this.readOption();
                 this.menuNavigator.select(input);
             } catch(InvalidOptionException e) {
-                this.bibliotecaCLI.showOutput("Please select a valid option!");
+                this.bibliotecaCLI.showOutputAndLineBreak("Please select a valid option!");
             }
             this.bibliotecaCLI.printBlankLine();
             this.bibliotecaCLI.clearOutput();
@@ -48,10 +48,6 @@ public class BibliotecaApp {
 
     public String generateWelcomeMessage() {
         return "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!";
-    }
-
-    public void showMenu() {
-        this.bibliotecaCLI.showOutput(this.menuNavigator.getMenu());
     }
 
     private Integer readOption() throws InvalidOptionException {

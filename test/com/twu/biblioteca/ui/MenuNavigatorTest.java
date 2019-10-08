@@ -4,22 +4,23 @@ import com.twu.biblioteca.ui.exception.InvalidOptionException;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.*;
 
 public class MenuNavigatorTest {
 
-    MenuNavigator navigator;
+    private MenuNavigator navigator;
+    private BibliotecaCLI cli;
 
     @Before
     public void setUp() {
-        navigator = new MenuNavigator();
+        cli = mock(BibliotecaCLI.class);
+        navigator = new MenuNavigator(cli);
     }
 
     @Test
     public void shouldReturnMainMenuContentString() {
-        String menuStr = navigator.getMenu();
-        assertThat(menuStr, is("1 - List of books"));
+        navigator.showMenu();
+        verify(cli, times(1)).showOutputAndLineBreak("1 - List of books");
     }
 
     @Test(expected = InvalidOptionException.class)
