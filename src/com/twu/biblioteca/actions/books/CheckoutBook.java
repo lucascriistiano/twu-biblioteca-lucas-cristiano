@@ -30,6 +30,8 @@ public class CheckoutBook extends MenuAction {
             BooksService booksService = BooksService.getInstance();
             Book book = booksService.find(bookID);
             booksService.checkoutBook(book);
+
+            outputBuilder.addLine("Thank you! Enjoy the book");
         } catch (InvalidOptionException e) {
             e.printStackTrace();
         }
