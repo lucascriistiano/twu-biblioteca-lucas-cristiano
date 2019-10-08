@@ -3,6 +3,7 @@ package com.twu.biblioteca.actions.books;
 import com.twu.biblioteca.actions.MenuAction;
 import com.twu.biblioteca.service.BooksService;
 import com.twu.biblioteca.service.exception.NonExistentBookException;
+import com.twu.biblioteca.service.exception.NotCheckedOutBookException;
 import com.twu.biblioteca.service.exception.UnavailableBookException;
 import com.twu.biblioteca.ui.BibliotecaCLI;
 import com.twu.biblioteca.ui.OutputBuilder;
@@ -32,8 +33,8 @@ public class ReturnBook extends MenuAction {
             booksService.returnBook(bookID);
 
             outputBuilder.addLine("Thank you for returning the book");
-        } catch (InvalidOptionException | NonExistentBookException | UnavailableBookException e) {
-            e.printStackTrace();
+        } catch (InvalidOptionException | NonExistentBookException | NotCheckedOutBookException e) {
+            outputBuilder.addLine("That is not a valid book to return");
         }
     }
 
