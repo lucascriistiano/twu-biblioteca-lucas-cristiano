@@ -2,6 +2,8 @@ package com.twu.biblioteca.service;
 
 import com.twu.biblioteca.domain.Book;
 import com.twu.biblioteca.domain.BookStatus;
+import com.twu.biblioteca.service.exception.NonExistentBookException;
+import com.twu.biblioteca.service.exception.UnavailableBookException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,13 +46,19 @@ public class BooksServiceTest {
         assertThat(books, everyItem(hasProperty("status", is(BookStatus.AVAILABLE))));
     }
 
+    @Test(expected = NonExistentBookException.class)
+    public void shouldThrowExceptionOnNonExistingBookId() {
+        assertThat(service.find(-1), is(nullValue()));
+    }
+
     @Test
     public void shouldChangeBookStatusOnCheckout() {
-        List<Book> books = service.listBooks();
-        Book book = books.get(0);
-
+        Book book = service.find(1);
         assertThat(book.getStatus(), is(BookStatus.AVAILABLE));
-        service.checkoutBook(book);
+
+        service.checkoutBook(1);
+
+        book = service.find(1);
         assertThat(book.getStatus(), is(BookStatus.NOT_AVAILABLE));
     }
 
@@ -60,13 +68,28 @@ public class BooksServiceTest {
         int bookListSize = books.size();
 
         Book book = books.get(0);
-        service.checkoutBook(book);
+        int bookId = book.getId();
+        service.checkoutBook(bookId);
 
         books = service.listAvailableBooks();
 
         assertThat(books, everyItem(hasProperty("status", is(BookStatus.AVAILABLE))));
         assertThat(books.size(), is(bookListSize - 1));
-        assertThat(books, everyItem(hasProperty("id", is(not(book.getId())))));
+        assertThat(books, everyItem(hasProperty("id", is(not(bookId)))));
+    }
+
+    @Test(expected = UnavailableBookException.class)
+    public void shouldThrowExceptionOnCheckoutOfCheckedOutBook() {
+        List<Book> books = service.listAvailableBooks();
+        Book book = books.get(0);
+        int bookId = book.getId();
+        assertThat(book.getStatus(), is(BookStatus.AVAILABLE));
+
+        service.checkoutBook(bookId);
+        book = service.find(bookId);
+        assertThat(book.getStatus(), is(BookStatus.NOT_AVAILABLE));
+
+        service.checkoutBook(bookId);
     }
 
 }

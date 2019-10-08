@@ -1,8 +1,9 @@
 package com.twu.biblioteca.actions.books;
 
 import com.twu.biblioteca.actions.MenuAction;
-import com.twu.biblioteca.domain.Book;
 import com.twu.biblioteca.service.BooksService;
+import com.twu.biblioteca.service.exception.NonExistentBookException;
+import com.twu.biblioteca.service.exception.UnavailableBookException;
 import com.twu.biblioteca.ui.BibliotecaCLI;
 import com.twu.biblioteca.ui.OutputBuilder;
 import com.twu.biblioteca.ui.exception.InvalidOptionException;
@@ -28,12 +29,11 @@ public class CheckoutBook extends MenuAction {
             Integer bookID = BibliotecaCLI.parseMenuInput(cli.readInput());
 
             BooksService booksService = BooksService.getInstance();
-            Book book = booksService.find(bookID);
-            booksService.checkoutBook(book);
+            booksService.checkoutBook(bookID);
 
             outputBuilder.addLine("Thank you! Enjoy the book");
-        } catch (InvalidOptionException e) {
-            e.printStackTrace();
+        } catch (InvalidOptionException | NonExistentBookException | UnavailableBookException e) {
+            outputBuilder.addLine("Sorry, that book is not available");
         }
     }
 

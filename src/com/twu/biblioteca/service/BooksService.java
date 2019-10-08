@@ -2,6 +2,8 @@ package com.twu.biblioteca.service;
 
 import com.twu.biblioteca.domain.Book;
 import com.twu.biblioteca.domain.BookStatus;
+import com.twu.biblioteca.service.exception.NonExistentBookException;
+import com.twu.biblioteca.service.exception.UnavailableBookException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,14 +37,22 @@ public class BooksService {
         return books.stream().filter(b -> b.getStatus() == BookStatus.AVAILABLE).collect(Collectors.toList());
     }
 
-    public void checkoutBook(Book book) {
+    public void checkoutBook(Integer bookID) throws UnavailableBookException {
+        Book book = find(bookID);
+        if (book.getStatus() == BookStatus.NOT_AVAILABLE) {
+            throw new UnavailableBookException();
+        }
         book.setStatus(BookStatus.NOT_AVAILABLE);
     }
 
-    public Book find(Integer bookID) {
-        return books.stream()
+    public Book find(Integer bookID) throws NonExistentBookException {
+        Book book = books.stream()
                 .filter(b -> b.getId().equals(bookID))
                 .findAny()
                 .orElse(null);
+        if (book == null) {
+            throw new NonExistentBookException();
+        }
+        return book;
     }
 }
