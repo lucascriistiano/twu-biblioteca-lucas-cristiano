@@ -1,31 +1,20 @@
 package com.twu.biblioteca.domain;
 
-public class Book {
+public class Book extends Item {
 
-    public static int NEXT_BOOK_ID = 1;
+    private static int NEXT_BOOK_ID = 1;
 
-    private Integer id;
     private String title;
     private String author;
     private Integer publicationYear;
-    private BookStatus status;
 
     public Book(String title, String author, Integer publicationYear) {
-        this.id = NEXT_BOOK_ID;
+        super(NEXT_BOOK_ID);
         NEXT_BOOK_ID++;
+
         this.title = title;
         this.author = author;
         this.publicationYear = publicationYear;
-        this.status = BookStatus.AVAILABLE;
-    }
-
-    public Book(String title, String author, Integer publicationYear, BookStatus status) {
-        this(title, author, publicationYear);
-        this.status = status;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public String getTitle() {
@@ -50,14 +39,6 @@ public class Book {
 
     public void setPublicationYear(Integer publicationYear) {
         this.publicationYear = publicationYear;
-    }
-
-    public BookStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(BookStatus status) {
-        this.status = status;
     }
 
 }

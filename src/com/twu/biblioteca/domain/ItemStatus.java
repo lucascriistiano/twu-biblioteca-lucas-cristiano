@@ -1,6 +1,6 @@
 package com.twu.biblioteca.domain;
 
-public enum BookStatus {
+public enum ItemStatus {
     AVAILABLE,
     NOT_AVAILABLE
 }

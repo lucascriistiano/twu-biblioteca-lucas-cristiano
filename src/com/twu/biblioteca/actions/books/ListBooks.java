@@ -1,40 +1,26 @@
 package com.twu.biblioteca.actions.books;
 
-import com.twu.biblioteca.actions.MenuAction;
+import com.twu.biblioteca.actions.ListItems;
 import com.twu.biblioteca.domain.Book;
-import com.twu.biblioteca.service.BooksService;
+import com.twu.biblioteca.service.ItemService;
 import com.twu.biblioteca.ui.OutputBuilder;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class ListBooks extends MenuAction {
+public class ListBooks extends ListItems<Book> {
 
-    private OutputBuilder outputBuilder;
-
-    public ListBooks(OutputBuilder outputBuilder) {
-        super("List of books");
-        this.outputBuilder = outputBuilder;
+    public ListBooks(OutputBuilder outputBuilder, ItemService<Book> service, String itemName) {
+        super(outputBuilder, service, itemName);
     }
 
     @Override
-    public boolean run() {
-        System.out.println("====== Book List ======");
+    public void printFormattedItemsList(List<Book> items) {
+        String format = generateBookPrintFormat(items);
 
-        BooksService booksService = BooksService.getInstance();
-        List<Book> books = booksService.listAvailableBooks();
-
-        printFormattedBookList(books);
-        outputBuilder.addBlankLine();
-        return true;
-    }
-
-    private void printFormattedBookList(List<Book> books) {
-        String format = generateBookPrintFormat(books);
-
-        outputBuilder.addLine(String.format(format, "ID", "TITLE", "AUTHOR", "YEAR"));
-        books.forEach(book -> outputBuilder.addLine(String.format(format, book.getId(), book.getTitle(),
+        getOutputBuilder().addLine(String.format(format, "ID", "TITLE", "AUTHOR", "YEAR"));
+        items.forEach(book -> getOutputBuilder().addLine(String.format(format, book.getId(), book.getTitle(),
                 book.getAuthor(), book.getPublicationYear())));
     }
 

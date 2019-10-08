@@ -1,8 +1,12 @@
 package com.twu.biblioteca.actions;
 
-public abstract class MenuAction implements Action {
+import com.twu.biblioteca.domain.Item;
+
+public abstract class MenuAction<T extends Item> implements Action {
 
     private String description;
+
+    public MenuAction() { }
 
     public MenuAction(String description) {
         this.description = description;
@@ -10,6 +14,10 @@ public abstract class MenuAction implements Action {
 
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

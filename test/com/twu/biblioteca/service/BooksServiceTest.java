@@ -1,10 +1,10 @@
 package com.twu.biblioteca.service;
 
 import com.twu.biblioteca.domain.Book;
-import com.twu.biblioteca.domain.BookStatus;
-import com.twu.biblioteca.service.exception.NonExistentBookException;
-import com.twu.biblioteca.service.exception.NotCheckedOutBookException;
-import com.twu.biblioteca.service.exception.UnavailableBookException;
+import com.twu.biblioteca.domain.ItemStatus;
+import com.twu.biblioteca.service.exception.NonExistentItemException;
+import com.twu.biblioteca.service.exception.NotCheckedOutItemException;
+import com.twu.biblioteca.service.exception.UnavailableItemException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -26,13 +26,13 @@ public class BooksServiceTest {
 
     @Test
     public void shouldReturnNonEmptyListOfBooks() {
-        List<Book> books = service.listBooks();
+        List<Book> books = service.listItems();
         assertThat(books.size(),  is(greaterThan(0)));
     }
 
     @Test
     public void shouldReturnBookObject() {
-        List<Book> books = service.listBooks();
+        List<Book> books = service.listItems();
         Book book = books.get(0);
 
         assertThat(book, hasProperty("title"));
@@ -43,102 +43,102 @@ public class BooksServiceTest {
 
     @Test
     public void shouldReturnJustAvailableBooks() {
-        List<Book> books = service.listAvailableBooks();
-        assertThat(books, everyItem(hasProperty("status", is(BookStatus.AVAILABLE))));
+        List<Book> books = service.listAvailableItems();
+        assertThat(books, everyItem(hasProperty("status", is(ItemStatus.AVAILABLE))));
     }
 
-    @Test(expected = NonExistentBookException.class)
+    @Test(expected = NonExistentItemException.class)
     public void shouldThrowExceptionOnNonExistingBookId() {
-        assertThat(service.find(-1), is(nullValue()));
+        assertThat(service.findItem(-1), is(nullValue()));
     }
 
     @Test
     public void shouldChangeBookStatusOnCheckout() {
-        List<Book> books = service.listAvailableBooks();
+        List<Book> books = service.listAvailableItems();
         Book book = books.get(0);
         int bookId = book.getId();
 
-        assertThat(book.getStatus(), is(BookStatus.AVAILABLE));
+        assertThat(book.getStatus(), is(ItemStatus.AVAILABLE));
 
-        service.checkoutBook(bookId);
+        service.checkoutItem(bookId);
 
-        book = service.find(bookId);
-        assertThat(book.getStatus(), is(BookStatus.NOT_AVAILABLE));
+        book = service.findItem(bookId);
+        assertThat(book.getStatus(), is(ItemStatus.NOT_AVAILABLE));
     }
 
     @Test
     public void shouldRemoveBookFromBooksListAfterCheckout() {
-        List<Book> books = service.listAvailableBooks();
+        List<Book> books = service.listAvailableItems();
         int bookListSize = books.size();
 
         Book book = books.get(0);
         int bookId = book.getId();
-        service.checkoutBook(bookId);
+        service.checkoutItem(bookId);
 
-        books = service.listAvailableBooks();
+        books = service.listAvailableItems();
 
-        assertThat(books, everyItem(hasProperty("status", is(BookStatus.AVAILABLE))));
+        assertThat(books, everyItem(hasProperty("status", is(ItemStatus.AVAILABLE))));
         assertThat(books.size(), is(bookListSize - 1));
         assertThat(books, everyItem(hasProperty("id", is(not(bookId)))));
     }
 
-    @Test(expected = UnavailableBookException.class)
+    @Test(expected = UnavailableItemException.class)
     public void shouldThrowExceptionOnCheckoutOfCheckedOutBook() {
-        List<Book> books = service.listAvailableBooks();
+        List<Book> books = service.listAvailableItems();
         Book book = books.get(0);
         int bookId = book.getId();
-        assertThat(book.getStatus(), is(BookStatus.AVAILABLE));
+        assertThat(book.getStatus(), is(ItemStatus.AVAILABLE));
 
-        service.checkoutBook(bookId);
-        book = service.find(bookId);
-        assertThat(book.getStatus(), is(BookStatus.NOT_AVAILABLE));
+        service.checkoutItem(bookId);
+        book = service.findItem(bookId);
+        assertThat(book.getStatus(), is(ItemStatus.NOT_AVAILABLE));
 
-        service.checkoutBook(bookId);
+        service.checkoutItem(bookId);
     }
 
     @Test
     public void shouldChangeBookStatusOnReturn() {
-        List<Book> books = service.listAvailableBooks();
+        List<Book> books = service.listAvailableItems();
         Book book = books.get(0);
 
         int bookId = book.getId();
-        service.checkoutBook(bookId);
+        service.checkoutItem(bookId);
 
-        service.returnBook(bookId);
+        service.returnItem(bookId);
 
-        book = service.find(bookId);
-        assertThat(book.getStatus(), is(BookStatus.AVAILABLE));
+        book = service.findItem(bookId);
+        assertThat(book.getStatus(), is(ItemStatus.AVAILABLE));
     }
 
     @Test
     public void shouldReturnBookToBooksListAfterReturned() {
-        List<Book> books = service.listAvailableBooks();
+        List<Book> books = service.listAvailableItems();
         int bookListSize = books.size();
 
         Book book = books.get(0);
         int bookId = book.getId();
-        service.checkoutBook(bookId);
+        service.checkoutItem(bookId);
 
-        books = service.listAvailableBooks();
+        books = service.listAvailableItems();
         assertThat(books, everyItem(hasProperty("id", is(not(bookId)))));
         assertThat(books.size(), is(bookListSize - 1));
 
-        service.returnBook(bookId);
+        service.returnItem(bookId);
 
-        books = service.listAvailableBooks();
-        assertThat(books, everyItem(hasProperty("status", is(BookStatus.AVAILABLE))));
+        books = service.listAvailableItems();
+        assertThat(books, everyItem(hasProperty("status", is(ItemStatus.AVAILABLE))));
         assertThat(books.size(), is(bookListSize));
         assertThat(books, hasItem(hasProperty("id", is(bookId))));
     }
 
-    @Test(expected = NotCheckedOutBookException.class)
+    @Test(expected = NotCheckedOutItemException.class)
     public void shouldThrowExceptionOnReturnOfNotCheckedOutBook() {
-        List<Book> books = service.listAvailableBooks();
+        List<Book> books = service.listAvailableItems();
         Book book = books.get(0);
         int bookId = book.getId();
-        assertThat(book.getStatus(), is(BookStatus.AVAILABLE));
+        assertThat(book.getStatus(), is(ItemStatus.AVAILABLE));
 
-        service.returnBook(bookId);
+        service.returnItem(bookId);
     }
 
 }
