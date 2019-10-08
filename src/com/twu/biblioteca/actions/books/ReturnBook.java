@@ -30,6 +30,8 @@ public class ReturnBook extends MenuAction {
 
             BooksService booksService = BooksService.getInstance();
             booksService.returnBook(bookID);
+
+            outputBuilder.addLine("Thank you for returning the book");
         } catch (InvalidOptionException | NonExistentBookException | UnavailableBookException e) {
             e.printStackTrace();
         }
