@@ -26,7 +26,8 @@ public class MenuNavigator {
         this.options.put(2, new CheckoutItem<>(outputBuilder, cli, BooksService.getInstance(), "Book"));
         this.options.put(3, new ReturnItem<>(outputBuilder, cli, BooksService.getInstance(), "Book"));
         this.options.put(4, new ListMovies(outputBuilder, MoviesService.getInstance(), "Movie"));
-        this.options.put(5, new QuitApplicationAction());
+        this.options.put(5, new CheckoutItem<>(outputBuilder, cli, MoviesService.getInstance(), "Movie"));
+        this.options.put(6, new QuitApplicationAction());
     }
 
     public boolean select(Integer input) throws InvalidOptionException {
