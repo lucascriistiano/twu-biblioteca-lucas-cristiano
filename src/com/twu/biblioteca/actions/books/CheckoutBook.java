@@ -20,7 +20,7 @@ public class CheckoutBook extends MenuAction {
     }
 
     @Override
-    public void run() {
+    public boolean run() {
         outputBuilder.addLine("====== Book Checkout ======");
         outputBuilder.add("Type the ID of the book to checkout: ");
         cli.showOutput(outputBuilder.buildAndClear());
@@ -35,6 +35,7 @@ public class CheckoutBook extends MenuAction {
         } catch (InvalidOptionException | NonExistentBookException | UnavailableBookException e) {
             outputBuilder.addLine("Sorry, that book is not available");
         }
+        return true;
     }
 
 }

@@ -4,7 +4,6 @@ import com.twu.biblioteca.actions.MenuAction;
 import com.twu.biblioteca.service.BooksService;
 import com.twu.biblioteca.service.exception.NonExistentBookException;
 import com.twu.biblioteca.service.exception.NotCheckedOutBookException;
-import com.twu.biblioteca.service.exception.UnavailableBookException;
 import com.twu.biblioteca.ui.BibliotecaCLI;
 import com.twu.biblioteca.ui.OutputBuilder;
 import com.twu.biblioteca.ui.exception.InvalidOptionException;
@@ -21,7 +20,7 @@ public class ReturnBook extends MenuAction {
     }
 
     @Override
-    public void run() {
+    public boolean run() {
         outputBuilder.addLine("====== Book Return ======");
         outputBuilder.add("Type the ID of the book to return: ");
         cli.showOutput(outputBuilder.buildAndClear());
@@ -36,6 +35,7 @@ public class ReturnBook extends MenuAction {
         } catch (InvalidOptionException | NonExistentBookException | NotCheckedOutBookException e) {
             outputBuilder.addLine("That is not a valid book to return");
         }
+        return true;
     }
 
 }

@@ -19,7 +19,7 @@ public class ListBooks extends MenuAction {
     }
 
     @Override
-    public void run() {
+    public boolean run() {
         System.out.println("====== Book List ======");
 
         BooksService booksService = BooksService.getInstance();
@@ -27,6 +27,7 @@ public class ListBooks extends MenuAction {
 
         printFormattedBookList(books);
         outputBuilder.addBlankLine();
+        return true;
     }
 
     private void printFormattedBookList(List<Book> books) {

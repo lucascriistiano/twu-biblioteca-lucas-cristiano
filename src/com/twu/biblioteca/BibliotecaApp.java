@@ -46,7 +46,7 @@ public class BibliotecaApp {
                 this.bibliotecaCLI.showOutput(this.outputBuilder.buildAndClear());
 
                 Integer input = BibliotecaCLI.parseMenuInput(this.bibliotecaCLI.readInput());
-                this.menuNavigator.select(input);
+                this.running = this.menuNavigator.select(input);
             } catch(InvalidOptionException e) {
                 this.outputBuilder.addLine("Please select a valid option!");
             }

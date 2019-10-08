@@ -1,5 +1,5 @@
 package com.twu.biblioteca.actions;
 
 public interface Action {
-    void run();
+    boolean run();
 }
