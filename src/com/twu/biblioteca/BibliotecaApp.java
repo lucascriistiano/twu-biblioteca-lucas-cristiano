@@ -2,11 +2,13 @@ package com.twu.biblioteca;
 
 import com.twu.biblioteca.ui.BibliotecaCLI;
 import com.twu.biblioteca.ui.MenuNavigator;
+import com.twu.biblioteca.ui.OutputBuilder;
 import com.twu.biblioteca.ui.exception.InvalidOptionException;
 
 public class BibliotecaApp {
 
     private final BibliotecaCLI bibliotecaCLI;
+    private OutputBuilder outputBuilder = null;
     private MenuNavigator menuNavigator;
     private boolean running;
 
@@ -17,12 +19,14 @@ public class BibliotecaApp {
 
     public BibliotecaApp() {
         this.bibliotecaCLI = new BibliotecaCLI();
-        this.menuNavigator = new MenuNavigator(bibliotecaCLI);
+        this.outputBuilder = new OutputBuilder();
+        this.menuNavigator = new MenuNavigator(outputBuilder, bibliotecaCLI);
         this.running = false;
     }
 
-    public BibliotecaApp(BibliotecaCLI cli, MenuNavigator navigator) {
+    public BibliotecaApp(BibliotecaCLI cli, OutputBuilder outputBuilder, MenuNavigator navigator) {
         this.bibliotecaCLI = cli;
+        this.outputBuilder = outputBuilder;
         this.menuNavigator = navigator;
         this.running = false;
     }
@@ -30,30 +34,29 @@ public class BibliotecaApp {
     public void start() {
         this.running = true;
 
-        this.bibliotecaCLI.showOutputAndLineBreak(generateWelcomeMessage());
-        this.bibliotecaCLI.printBlankLine();
+        this.outputBuilder.clear();
+        this.outputBuilder.addLine(generateWelcomeMessage());
+        this.outputBuilder.addBlankLine();
 
         while(running) {
-            this.menuNavigator.showMenu();
+            this.menuNavigator.buildMenu();
+
             try {
-                Integer input = this.readOption();
+                this.outputBuilder.add("Select an menu option: ");
+                this.bibliotecaCLI.showOutput(this.outputBuilder.buildAndClear());
+
+                Integer input = BibliotecaCLI.parseMenuInput(this.bibliotecaCLI.readInput());
                 this.menuNavigator.select(input);
             } catch(InvalidOptionException e) {
-                this.bibliotecaCLI.showOutputAndLineBreak("Please select a valid option!");
+                this.outputBuilder.addLine("Please select a valid option!");
             }
-            this.bibliotecaCLI.printBlankLine();
-            this.bibliotecaCLI.clearOutput();
+            this.outputBuilder.addBlankLine();
+            this.bibliotecaCLI.showOutput(this.outputBuilder.buildAndClear());
         }
     }
 
     public String generateWelcomeMessage() {
         return "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!";
-    }
-
-    private Integer readOption() throws InvalidOptionException {
-        System.out.print("Select an menu option: ");
-        String input = this.bibliotecaCLI.readInput();
-        return BibliotecaCLI.parseMenuInput(input);
     }
 
 }

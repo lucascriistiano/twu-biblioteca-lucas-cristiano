@@ -9,18 +9,20 @@ import static org.mockito.Mockito.*;
 public class MenuNavigatorTest {
 
     private MenuNavigator navigator;
+    private OutputBuilder outputBuilder;
     private BibliotecaCLI cli;
 
     @Before
     public void setUp() {
         cli = mock(BibliotecaCLI.class);
-        navigator = new MenuNavigator(cli);
+        outputBuilder = mock(OutputBuilder.class);
+        navigator = new MenuNavigator(outputBuilder, cli);
     }
 
     @Test
     public void shouldReturnMainMenuContentString() {
-        navigator.showMenu();
-        verify(cli, times(1)).showOutputAndLineBreak("1 - List of books");
+        navigator.buildMenu();
+        verify(outputBuilder, times(1)).addLine("1 - List of books");
     }
 
     @Test(expected = InvalidOptionException.class)

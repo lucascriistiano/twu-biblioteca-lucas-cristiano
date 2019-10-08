@@ -3,7 +3,7 @@ package com.twu.biblioteca.actions.books;
 import com.twu.biblioteca.actions.MenuAction;
 import com.twu.biblioteca.domain.Book;
 import com.twu.biblioteca.service.BooksService;
-import com.twu.biblioteca.ui.BibliotecaCLI;
+import com.twu.biblioteca.ui.OutputBuilder;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,11 +11,11 @@ import java.util.List;
 
 public class ListBooks extends MenuAction {
 
-    private BibliotecaCLI bibliotecaCLI;
+    private OutputBuilder outputBuilder;
 
-    public ListBooks(BibliotecaCLI bibliotecaCLI) {
+    public ListBooks(OutputBuilder outputBuilder) {
         super("List of books");
-        this.bibliotecaCLI = bibliotecaCLI;
+        this.outputBuilder = outputBuilder;
     }
 
     @Override
@@ -26,14 +26,14 @@ public class ListBooks extends MenuAction {
         List<Book> books = booksService.listAvailableBooks();
 
         printFormattedBookList(books);
-        bibliotecaCLI.printBlankLine();
+        outputBuilder.addBlankLine();
     }
 
     private void printFormattedBookList(List<Book> books) {
         String format = generateBookPrintFormat(books);
 
-        bibliotecaCLI.showOutputAndLineBreak(String.format(format, "ID", "TITLE", "AUTHOR", "YEAR"));
-        books.forEach(book -> bibliotecaCLI.showOutputAndLineBreak(String.format(format, book.getId(), book.getTitle(),
+        outputBuilder.addLine(String.format(format, "ID", "TITLE", "AUTHOR", "YEAR"));
+        books.forEach(book -> outputBuilder.addLine(String.format(format, book.getId(), book.getTitle(),
                 book.getAuthor(), book.getPublicationYear())));
     }
 

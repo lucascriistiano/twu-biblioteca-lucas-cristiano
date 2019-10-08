@@ -1,11 +1,7 @@
 package com.twu.biblioteca.ui;
 
-import com.twu.biblioteca.domain.Book;
 import com.twu.biblioteca.ui.exception.InvalidOptionException;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Scanner;
 
 public class BibliotecaCLI {
@@ -30,18 +26,12 @@ public class BibliotecaCLI {
         }
     }
 
-    public String showOutputAndLineBreak(String output) {
+    public void showOutputAndLineBreak(String output) {
         System.out.println(output);
-        return output;
     }
 
-    public String showOutput(String output) {
+    public void showOutput(String output) {
         System.out.print(output);
-        return output;
-    }
-
-    public void printBlankLine() {
-        System.out.println();
     }
 
     public void clearOutput() {

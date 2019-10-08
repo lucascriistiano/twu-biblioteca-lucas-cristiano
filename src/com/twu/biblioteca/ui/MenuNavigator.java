@@ -10,15 +10,15 @@ import java.util.Map;
 
 public class MenuNavigator {
 
-    private BibliotecaCLI bibliotecaCLI;
+    private OutputBuilder outputBuilder;
     private Map<Integer, MenuAction> options;
 
-    public MenuNavigator(BibliotecaCLI bibliotecaCLI) {
-        this.bibliotecaCLI = bibliotecaCLI;
+    public MenuNavigator(OutputBuilder outputBuilder, BibliotecaCLI cli) {
+        this.outputBuilder = outputBuilder;
 
         this.options = new HashMap<>();
-        this.options.put(1, new ListBooks(bibliotecaCLI));
-        this.options.put(2, new CheckoutBook(bibliotecaCLI));
+        this.options.put(1, new ListBooks(outputBuilder));
+        this.options.put(2, new CheckoutBook(outputBuilder, cli));
     }
 
     public void select(Integer input) throws InvalidOptionException {
@@ -30,18 +30,12 @@ public class MenuNavigator {
         action.run();
     }
 
-    private String getMenu() {
-        StringBuilder menuStr = new StringBuilder();
-        options.forEach((index, value) -> menuStr.append(formatMenuOption(index, value)));
-        return menuStr.toString();
-    }
-
-    public void showMenu() {
-        this.bibliotecaCLI.showOutputAndLineBreak(getMenu());
+    public void buildMenu() {
+        options.forEach((index, value) -> outputBuilder.addLine(formatMenuOption(index, value)));
     }
 
     private String formatMenuOption(Integer index, MenuAction action) {
-        return String.format("%d - %s\n", index, action.getDescription());
+        return String.format("%d - %s", index, action.getDescription());
     }
 
     private boolean isValidOption(Integer option) {

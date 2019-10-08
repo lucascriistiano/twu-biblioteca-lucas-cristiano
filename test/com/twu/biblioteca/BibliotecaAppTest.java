@@ -3,6 +3,7 @@ package com.twu.biblioteca;
 
 import com.twu.biblioteca.ui.BibliotecaCLI;
 import com.twu.biblioteca.ui.MenuNavigator;
+import com.twu.biblioteca.ui.OutputBuilder;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -14,20 +15,22 @@ public class BibliotecaAppTest {
 
     private BibliotecaApp app;
     private BibliotecaCLI cli;
+    private OutputBuilder outputBuilder;
     private MenuNavigator navigator;
 
     @Before
     public void setUp() {
         cli = mock(BibliotecaCLI.class);
+        outputBuilder = mock(OutputBuilder.class);
         navigator = mock(MenuNavigator.class);
-        app = new BibliotecaApp(cli, navigator);
+        app = new BibliotecaApp(cli, outputBuilder, navigator);
     }
 
     @Test
     public void shouldShowWelcomeMessageOnApplicationStart() {
         app.start();
         String welcomeMessage = app.generateWelcomeMessage();
-        verify(cli, times(1)).showOutputAndLineBreak(welcomeMessage);
+        verify(outputBuilder, times(1)).addLine(welcomeMessage);
     }
 
     @Test
@@ -39,7 +42,7 @@ public class BibliotecaAppTest {
     @Test
     public void shouldShowMainMenuOnApplicationStart() {
         app.start();
-        verify(navigator, times(1)).showMenu();
+        verify(navigator, times(1)).buildMenu();
     }
 
 }
